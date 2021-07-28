@@ -20,10 +20,10 @@ public class Main {
     }
 
     public static int binaryRecursiveSearch(int[] arr, int leftIndex, int rightIndex, int num){
-        if(leftIndex>rightIndex) return -1;
+        if(leftIndex>rightIndex) return -1;                                      // exit condition : if the leftIndex is greater than right i.e. element wasnt found
         int mid = (leftIndex + rightIndex)/2;
         System.out.println(leftIndex+" "+" "+mid+" "+rightIndex);
-        if(arr[mid] == num) return mid;
+        if(arr[mid] == num) return mid;                                          // exit condition : if the element was found
         else if(arr[mid] > num ) return binaryRecursiveSearch(arr,leftIndex,mid-1,num);
         else return binaryRecursiveSearch(arr,mid+1,rightIndex,num);
     }
@@ -35,7 +35,7 @@ public class Main {
             System.out.println(leftIndex+" "+" "+mid+" "+rightIndex);
             if(arr[mid]==num){
                 result = mid;
-                break;
+                break;                                                          // loop breaks after the element is found and the result is returned
             }
             else if(arr[mid]<num) leftIndex = mid+1;
             else rightIndex = mid - 1;
