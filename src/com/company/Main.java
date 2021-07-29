@@ -45,7 +45,7 @@ public class Main {
         return result;
     }
 
-    public static int largestElement(int arr[]){
+    public static int largestElement(int[] arr){
         int result = 0;
         for(int i =0;(i+1) < arr.length;i++){                      // loop runs from index 0 till (i+1) is the last index i.e. till second last position
             if(arr[i]>arr[i+1]) swap(arr,i, i+1);               // every iteration compares the i element with i+1 element and swaps it with i+1 if larger
@@ -54,7 +54,7 @@ public class Main {
         return result;
     }
 
-    public static int nLargestElement(int[] arr, int n){
+    public static int nLargestElement(int[] arr, int n){             // find the nth largest element, the largest element is the 1st largest element and (arr.length)th largest element is the smallest
         int result = 0;                                              // n is the nth largest element
         for(int i = arr.length-1; i >= (arr.length-n); i--){         // loop runs from arr.length-1 i.e lastIndex till n from last i.e index = arr.length - n
             for(int j =0;(j+1)<=i;j++){                              // loop runs from first index i.e. 0 till nth element from last and keeps
