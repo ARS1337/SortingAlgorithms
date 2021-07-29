@@ -32,7 +32,7 @@ public class Main {
         int rightEnd = rightIndex;                                                // arr[] is sorted from leftIndex to mid
         int i = leftIndex;                                                        // and also sorted from mid + 1 to right index
         int j = mid + 1;                                                          // both these sorted sections are converted into a single sorted section
-        int[] temp = new int[rightIndex+1];                                       // from leftIndex to rightIndex
+        int[] temp = new int[rightIndex+1];                                       // leftIndex to rightIndex are now a continuous sorted section
         int tempIter = 0;
         while(i <= leftEnd && j <= rightEnd){                                     // loop runs till either of the sorted arrays are exhausted
             if(arr[i] < arr[j]){                                                  // compares elements and puts the smaller element in the temp array
@@ -57,7 +57,7 @@ public class Main {
             j++;
             tempIter++;
         }
-        for(int k = 0, l=leftIndex; k <= (temp.length - 1) && l <= rightIndex; k++,l++) arr[l] = temp[k]; // copy elements from temp[] to arr[]
+        for(int k = 0, l=leftIndex; k <= (temp.length - 1) && l <= rightIndex; k++,l++) arr[l] = temp[k]; // copy elements from temp[](0,temp.length-1) to arr[](leftIndex,rightIndex)
     }
 
     public static void bubbleSort(int[] arr){           // O(n^2)
