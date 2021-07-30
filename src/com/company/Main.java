@@ -1,9 +1,11 @@
 package com.company;
 
+import java.lang.ref.SoftReference;
+
 public class Main {
 
     public static void main(String[] args) {
-	    int[] arr = new int[]{0,0,0,0,0,4,2,6,2,6,421,7,72,4,7,87634,23};
+	    int[] arr = new int[]{0,7,23,6,3,6,35,7,8,6};
         //System.out.println(binaryRecursiveSearch(new int[]{0,1,2,3,4,5,6,7,8,11,45,100},0,11,45));
         //System.out.println(binaryIterativeSearch(new int[]{0,1,2,3,4,5,6,7,8,11,45,100},0,11,45));
         //System.out.println(nLargestElement(arr,10));
@@ -13,12 +15,59 @@ public class Main {
         //bubbleSort(arr);
         //optimizedBubbleSort(arr);
         //merge(arr,8,10,14);
-        mergeSort(arr,0,arr.length-1);
+        //mergeSort(arr,0,arr.length-1);
+        //System.out.println(partition(arr,0,arr.length-1));
+        //quickSort(arr,0,arr.length-1);
+        countingSort(arr);
 
         for(int i : arr) System.out.print(i+" ");
     }
 
-    public static void mergeSort(int[] arr, int leftIndex, int rightIndex){
+    public static void countingSort(int[] arr){                          // O(n+k) ; k is the size of the freq[] or the largest element of arr[] and n is the size of arr[]
+        int[] freq = new int[largestElement(arr)+1];                     // makes an array of length( largest element of arr + 1) so to represent all elements by its indexes and frequencies
+        int[] newArr = new int[arr.length];                              // a temp array to store all sorted elements
+        int sum = 0;                                                     // used to store the sum while cumulatively adding frequencies of all elements
+        for(int i : arr) freq[i]++;                                      // calculate the frequencies, element i has its frequency stored in ith position of freq[]
+                                                                         // for element i in original array, increment the freq[i], now element i's frequency is stored at i'th position in freq[]
+        for(int i = 0; i < freq.length; i++){
+            freq[i] += sum;                                              // calculate the cumulative frequencies
+            sum = freq[i];
+        }
+
+        for(int i = freq.length-1; i > 0 ; i--) swap(freq, i-1, i);    // elements are shifted right by one position
+        freq[0] = 0;                                                      // now an 'i' element in arr[] has its starting position at the freq[i]
+
+        for (int i : arr){
+            int startingIndex = freq[i];                                  // element i has its startingIndex stored at ith position in freq i.e. freq[i]
+            newArr[startingIndex] = i;                                    // now we store the element i at the startingIndex of the newArray
+            freq[i]++;                                                    // increment the starting index, in case we encounter the same number again
+        }                                                                 // so it wont be stored at the same position
+
+        for(int i =0 ; i < arr.length; i++) arr[i] = newArr[i];           // copy all elements from newArray[] to the original array arr[]
+    }
+
+    public static void quickSort(int[] arr, int leftIndex, int rightIndex){ // O(n*log(n))
+        if(leftIndex<rightIndex){                                           // exit condition : if the leftIndex >= rightIndex, i.e. array has only one or no elements
+            int pivot = partition(arr,leftIndex,rightIndex);                // divide the array into two section, with pivot at its sorted position
+            quickSort(arr,leftIndex,pivot-1);                      // keep calling itself recursively util there is one or no element
+            quickSort(arr,pivot+1,rightIndex);                      // after which it returns, since all array is sorted, partition is only called if there at least two elements in array
+        }                                                                   // the recursive quickSort call divides the array into arrays with left of pivot elements and the with right of pivot elements
+    }                                                                       // and partition keeps getting called till there are less than 2 elements in the array, and sorting two elements is just comparing...
+
+    private static int partition(int[] arr, int startIndex, int endIndex){  // divides the array into two sections, elements to left of pivot are smaller than pivot and
+        int pivot = endIndex;                                              // to the right of pivot are larger than pivot, pivot is chosen randomly as rightmost element
+        int leftIndex = startIndex;                                                //1. elements smaller than pivot are placed at this position and then this position is incremented
+        for(int i = startIndex; i < endIndex; i++){                           // loop runs form leftMost index till 2nd rightMostIndex ( index left of pivot)
+            if(arr[i]<arr[pivot]){                                           // if the element is smaller than pivot, then it is swapped with the leftIndex(see 1.)
+                swap(arr,i,leftIndex);                                            // so all elements that were swapped with leftIndex are smaller than pivot
+                leftIndex++;                                                      // leftIndex is increment after the swap to represent new position that the smaller than pivot elements
+            }                                                                   // should be swapped with
+        }                                                                  // since the loop runs only through non-pivot section of the array,
+        swap(arr,leftIndex,pivot);                                      // the pivot is swapped with the leftIndex as all elements smaller than pivot are placed at to the left of incremented leftIndex
+        return leftIndex;                                                 // this is the new pivot position ( leftIndex ), all elements to the left of leftIndex are smaller than pivot and
+    }                                                                      // pivot is itself at leftIndex position, hence element greater than or equal are right of pivot
+
+    public static void mergeSort(int[] arr, int leftIndex, int rightIndex){        // O(n*log(n))
         if(leftIndex<rightIndex){                               // exit condition : if both indexes are same
             int mid = ( leftIndex + rightIndex )/2;             // keeps calling itself recursively until there is only 1 element in subSection of array
             mergeSort(arr, leftIndex, mid);                     // i.e. leftIndex == rightIndex, after which it returns and merge is called subsequently
@@ -28,7 +77,7 @@ public class Main {
     }                                                           // and merge can be used for sorting already sorted arrays
 
     private static void merge(int[] arr, int leftIndex, int mid, int rightIndex){
-        int leftEnd = mid;                                                        // convert 2 sorted arrays into a single sorted array
+        int leftEnd = mid;                                                        // convert/merges 2 sorted arrays into a single sorted array
         int rightEnd = rightIndex;                                                // arr[] is sorted from leftIndex to mid
         int i = leftIndex;                                                        // and also sorted from mid + 1 to right index
         int j = mid + 1;                                                          // both these sorted sections are converted into a single sorted section
