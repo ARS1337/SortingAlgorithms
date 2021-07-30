@@ -18,9 +18,27 @@ public class Main {
         //mergeSort(arr,0,arr.length-1);
         //System.out.println(partition(arr,0,arr.length-1));
         //quickSort(arr,0,arr.length-1);
-        countingSort(arr);
+        //countingSort(arr);
+        shellSort(arr);
 
         for(int i : arr) System.out.print(i+" ");
+    }
+
+
+    public static void radixSort(int[] arr){}          /// to implement
+
+    public static void shellSort(int[] arr){                                  //
+        int interval = arr.length/2;                                          // compare elements interval apart
+        while(interval >= 1){                                                 // keeps comparing elements till interval is equal to 1
+            for(int i = 0; (i + interval) < arr.length; i++ ){                // loop runs form i = 0 till (i + interval) is less than arr.length
+                if(arr[i] > arr[i+interval]) swap(arr,i,i+interval);        // if greater then swap
+            }                                                                 //
+            interval = interval/2;                                            //  keep halving the interval until its 1
+        }                                                                     //  once the interval is 1, the adjacent elements are compared
+    }                                                                         //
+
+    public static int getIthDigit(int number,int digit){
+        return (number/(int)Math.pow(10,digit-1)) % 10;                  // get nth digit ; formula : (number / 10 ^ ( digit-1) ) % 10
     }
 
     public static void countingSort(int[] arr){                          // O(n+k) ; k is the size of the freq[] or the largest element of arr[] and n is the size of arr[]
@@ -34,11 +52,11 @@ public class Main {
             sum = freq[i];
         }
 
-        for(int i = freq.length-1; i > 0 ; i--) swap(freq, i-1, i);    // elements are shifted right by one position
+        for(int i = freq.length-1; i > 0 ; i--) swap(freq, i-1, i);    // elements are shifted right by one position and last one is discarded
         freq[0] = 0;                                                      // now an 'i' element in arr[] has its starting position at the freq[i]
 
         for (int i : arr){
-            int startingIndex = freq[i];                                  // element i has its startingIndex stored at ith position in freq i.e. freq[i]
+            int startingIndex = freq[i];                                  // element i in array arr[] has its startingIndex stored at ith position in freq i.e. freq[i]
             newArr[startingIndex] = i;                                    // now we store the element i at the startingIndex of the newArray
             freq[i]++;                                                    // increment the starting index, in case we encounter the same number again
         }                                                                 // so it wont be stored at the same position
