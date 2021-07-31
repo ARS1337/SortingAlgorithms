@@ -1,11 +1,13 @@
 package com.company;
 
 import java.lang.ref.SoftReference;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
 
     public static void main(String[] args) {
-	    int[] arr = new int[]{0,7,23,6,3,6,35,7,8,6};
+	    int[] arr = new int[]{3,3};
         //System.out.println(binaryRecursiveSearch(new int[]{0,1,2,3,4,5,6,7,8,11,45,100},0,11,45));
         //System.out.println(binaryIterativeSearch(new int[]{0,1,2,3,4,5,6,7,8,11,45,100},0,11,45));
         //System.out.println(nLargestElement(arr,10));
@@ -19,9 +21,76 @@ public class Main {
         //System.out.println(partition(arr,0,arr.length-1));
         //quickSort(arr,0,arr.length-1);
         //countingSort(arr);
-        shellSort(arr);
+        //shellSort(arr);
 
-        for(int i : arr) System.out.print(i+" ");
+        System.out.println(sqrt(65535));
+        //for(int i : arr) System.out.print(i+" ");
+    }
+
+    public static int sqrt(int num){
+        float result = 4.2435f;
+        int prev = 1;
+        for(int i = 0; i < 10 ; i++){
+            result = (result + num/result ) / 2;
+        //    prev = (int) result;
+        }
+        return (int)result;
+    }
+
+    public static int reverseInteger(int num){
+        int result = 0;                          // will store the reversed integer
+        int order = 0;                           // if the number is 284 then order is 2 i.e. ( 2.84 * 10 ^ 2 ) the order of 10 when number is expressed as less than 10
+        int sign = num < 0 ? -1 : 1;
+        int temp = num * sign;                          // temporary store the num
+
+        while(temp >= 10){                        //
+            temp /= 10;                          // keep dividing the num until its less than 10
+            order++;                             // and increment it until num < 10 i.e the order of that number
+        }
+        temp = num * sign;
+
+        for(int i = order; i >= 0 ; i--){
+            int digit =  ( temp / (int) Math.pow(10,order - i) ) % 10  ;      // get num's nth digit
+            result += digit * Math.pow(10,i);                                // multiply by the order and add to the result
+            if(num > 0 && result*sign < 0 || num < 0 && result*sign > 0){
+                result = 0;
+                break;
+            }
+        }
+        result = result * sign;
+
+        return result;
+    }
+
+    public static int[] twoSum1(int[] input, int target){                     // improved version of twoSum() with linear complexity using hashMap
+        int[] result = new int[2];
+        Map<Integer,Integer> hashMap = new HashMap<Integer, Integer>();       // since addition of any two numbers in input is equal to target then
+                                                                              // then if element i is one of the numbers then target - i exists in this array
+        for(int i = 0; i < input.length; i++) hashMap.put(target-input[i],i); // store Key : target - i , Value : indexOf(i) in the hashMap
+                                                                              // now use element i as the key for hashmap, if i is one of the numbers, then target - i exists in hashMap
+        System.out.println(" map " + hashMap.get(3));                         // and will return the index
+        for(int j = 0; j < input.length; j++){                                // it i is not the number then hashmap will return null
+            if(hashMap.get(input[j]) != null && j != hashMap.get(input[j]) ){ // if the array is [2,7,5,11] with target = 9, then the Map is [ (7,0), (2,1), (4,2), (-2,3) ]
+                result[0] = j;                                                // if element i is 2 in first iteration, then map.get(i) = 1, input array has 7 at index 1
+                result[1] = hashMap.get(input[j]);                            // if map.get(i) returns null then i is not one of the numbers
+                break;                                                        // check if both of these indexes dont point to same num in input array and break
+            }
+        }
+        return result;
+    }
+
+    public static int[] twoSum(int[] input, int target){ // find if sum of any two numbers( not same numbers ) of input == target
+        int[] result = new int[2];                       // store them both in an array
+        for(int i = 0; i < input.length; i++){           // compare i'th element to n - i elements, if sum of either of them = target
+            for(int j = i+1; j < input.length; j++ ){    // store them in the array
+                if(input[i]+input[j]==target){           // break after finding the sum
+                    result[0] = i;
+                    result[1] = j;
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
 
