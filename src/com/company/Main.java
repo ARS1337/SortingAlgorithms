@@ -22,25 +22,20 @@ public class Main {
         //quickSort(arr,0,arr.length-1);
         //countingSort(arr);
         //shellSort(arr);
-
-        LeetCodeSolutions.run();
+        //System.out.println((int)'I');
+        System.out.println(LeetCodeSolutions.roman2Integer("MCMXCIV"));
+        //for(int i : arr) System.out.print(i+" ");
     }
 
-    public static int sqrt(int num){
-        long left = 0;
-        long right = num;
-        long mid = 1;
-        long prevMid = 1;
-        if(num == 0 || num == 1) return num;
-        while(left < right){
-            mid = (left + right ) / 2;
-            if(mid * mid == num || mid == prevMid) break;
-            else if(mid*mid > num) right = mid;
-            else left = mid;
-            prevMid = mid;
-        }
 
-        return (int)mid;
+    public static int sqrt(int num){
+        float result = 4.2435f;
+        int prev = 1;
+        for(int i = 0; i < 10 ; i++){
+            result = (result + num/result ) / 2;
+        //    prev = (int) result;
+        }
+        return (int)result;
     }
 
     public static int reverseInteger(int num){
