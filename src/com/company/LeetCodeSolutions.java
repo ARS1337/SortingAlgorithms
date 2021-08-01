@@ -12,6 +12,46 @@ public class LeetCodeSolutions {
     }
 
 
+    public static ListNode addTwoNumbers(ListNode l1, ListNode l2){
+        ListNode result = new ListNode();
+        ListNode temp = result;
+        int orderL1 = 0;
+        int orderL2 = 0;
+        ListNode tempL1 = l1;
+        ListNode tempL2 = l2;
+        int carry = 0;
+        int num = 0;
+        while(tempL1 != null){
+            tempL1 = tempL1.next;
+            orderL1++;
+        }
+
+        while(tempL2 != null){
+            tempL2 = tempL2.next;
+            orderL2++;
+        }
+
+        while (l1 != null && l2 != null){
+            num = l1.val + l2.val;
+            if(carry > 0){
+                num = carry + l1.val + l2.val;
+                carry = 0;
+            }
+            if(num >= 10){
+                carry = num/10;
+                num = num%10;
+            }
+            temp.next = new ListNode(num);
+            l1 = l1.next;
+            l2 = l2.next;
+        }
+
+        if(l1 != null) temp.next = l1;
+        if(l2 != null) temp.next = l2;
+
+        return result.next;
+    }
+
 
     public static int roman2Integer(String s){
         int result = 0;
@@ -58,6 +98,15 @@ public class LeetCodeSolutions {
         return num >= 0 && true;
     }
 
+
+    //Definition for singly-linked list.
+    private static class ListNode {
+        int val;
+        ListNode next;
+        ListNode() {}
+        ListNode(int val) { this.val = val; }
+        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+    }
 
 
 }
