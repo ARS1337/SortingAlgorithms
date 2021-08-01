@@ -23,18 +23,24 @@ public class Main {
         //countingSort(arr);
         //shellSort(arr);
 
-        System.out.println(sqrt(65535));
-        //for(int i : arr) System.out.print(i+" ");
+        LeetCodeSolutions.run();
     }
 
     public static int sqrt(int num){
-        float result = 4.2435f;
-        int prev = 1;
-        for(int i = 0; i < 10 ; i++){
-            result = (result + num/result ) / 2;
-        //    prev = (int) result;
+        long left = 0;
+        long right = num;
+        long mid = 1;
+        long prevMid = 1;
+        if(num == 0 || num == 1) return num;
+        while(left < right){
+            mid = (left + right ) / 2;
+            if(mid * mid == num || mid == prevMid) break;
+            else if(mid*mid > num) right = mid;
+            else left = mid;
+            prevMid = mid;
         }
-        return (int)result;
+
+        return (int)mid;
     }
 
     public static int reverseInteger(int num){
