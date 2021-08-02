@@ -23,7 +23,8 @@ public class Main {
         //countingSort(arr);
         //shellSort(arr);
         //System.out.println((int)'I');
-        System.out.println(LeetCodeSolutions.roman2Integer("MCMXCIV"));
+        //System.out.println(LeetCodeSolutions.roman2Integer("MCMXCIV"));
+        LeetCodeSolutions.run();
         //for(int i : arr) System.out.print(i+" ");
     }
 

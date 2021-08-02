@@ -7,7 +7,17 @@ import java.util.HashMap;
 public class LeetCodeSolutions {
 
     public static void run(){
+        ListNode node1 = new ListNode(9);
+        node1.next = new ListNode(9);
 
+        ListNode node2 = new ListNode(1);
+        //node2.next = new ListNode(1);
+
+        ListNode nodeRes = addTwoNumbers(node1,node2);
+        while (nodeRes != null){
+            System.out.println(nodeRes.val);
+            nodeRes = nodeRes.next;
+        }
 
     }
 
@@ -15,39 +25,43 @@ public class LeetCodeSolutions {
     public static ListNode addTwoNumbers(ListNode l1, ListNode l2){
         ListNode result = new ListNode();
         ListNode temp = result;
-        int orderL1 = 0;
-        int orderL2 = 0;
+
         ListNode tempL1 = l1;
         ListNode tempL2 = l2;
+
         int carry = 0;
         int num = 0;
-        while(tempL1 != null){
-            tempL1 = tempL1.next;
-            orderL1++;
-        }
-
-        while(tempL2 != null){
-            tempL2 = tempL2.next;
-            orderL2++;
-        }
 
         while (l1 != null && l2 != null){
-            num = l1.val + l2.val;
-            if(carry > 0){
-                num = carry + l1.val + l2.val;
-                carry = 0;
-            }
-            if(num >= 10){
-                carry = num/10;
-                num = num%10;
-            }
+            num = carry + l1.val + l2.val;
+            carry = num/10;
+            num = num%10;
             temp.next = new ListNode(num);
+            System.out.println("l1.val "+l1.val+" l2.val "+l2.val+" num "+num+" carry "+carry);
             l1 = l1.next;
             l2 = l2.next;
+            temp = temp.next;
         }
 
-        if(l1 != null) temp.next = l1;
-        if(l2 != null) temp.next = l2;
+        while (l1 != null ){
+            num = carry + l1.val;
+            carry = num/10;
+            num = num%10;
+            temp.next = new ListNode(num);
+            l1 = l1.next;
+            temp = temp.next;
+        }
+
+        while (l2 != null ){
+            num = carry + l2.val;
+            carry = num/10;
+            num = num%10;
+            temp.next = new ListNode(num);
+            l2 = l2.next;
+            temp = temp.next;
+        }
+
+        if(carry != 0) temp.next = new ListNode(carry);
 
         return result.next;
     }
