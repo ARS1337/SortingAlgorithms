@@ -19,8 +19,37 @@ public class LeetCodeSolutions {
     public static ListNode mergeKLists(ListNode[] lists) {
         ListNode result = new ListNode();
         ListNode temp = result;
+        if(lists.length==0) return null;
+        final int pow10_5 = 10*10*10*10*10;
+        int val = pow10_5;
+        int listLength = lists.length;
+        int minIndex = -1;
+        while(listLength > 0){
+            listLength = lists.length;
+            minIndex = -1;
+            for(int i = 0; i < lists.length; i++){
+                if(lists[i]==null){
+                    listLength--;
+                    if(listLength == 0) break;
+                    continue;
+                }
+                if(lists[i].val<= val){
+                    minIndex = i;
+                    val = lists[i].val;
+                    //System.out.print(i + " ");
+                }
+            }
+            //System.out.print(" n ");
+            if(minIndex >=0){
+                val = pow10_5;
+                temp.next = new ListNode(lists[minIndex].val);
+                temp = temp.next;
+                lists[minIndex] = lists[minIndex].next;
+            }
+        }
 
-        return result;
+        return result.next;
+
     }
 
     public static boolean isValidSudoku(char[][] board) {
