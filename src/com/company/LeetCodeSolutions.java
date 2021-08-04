@@ -1,26 +1,163 @@
 package com.company;
 
-import org.w3c.dom.NodeList;
 
-import java.util.HashMap;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class LeetCodeSolutions {
 
     public static void run(){
-        ListNode node1 = new ListNode(9);
-        node1.next = new ListNode(9);
 
-        ListNode node2 = new ListNode(1);
-        //node2.next = new ListNode(1);
+        System.out.println((int)'1');
+//        List<List<String>> list = groupAnagrams(new String[]{"eat","tea","tan","ate","nat","bat"});
+//        list.stream().forEach(s->{
+//            s.stream().forEach(j-> System.out.print(j+" "));
+//            System.out.println();
+//        });
+    }
 
-        ListNode nodeRes = addTwoNumbers(node1,node2);
-        while (nodeRes != null){
-            System.out.println(nodeRes.val);
-            nodeRes = nodeRes.next;
+    public static ListNode mergeKLists(ListNode[] lists) {
+        ListNode result = new ListNode();
+        ListNode temp = result;
+
+        return result;
+    }
+
+    public static boolean isValidSudoku(char[][] board) {
+        boolean result = true;
+        int[] nums = new int[10];
+        int startRow = 0;
+        int startColoums = 0;
+
+        for(int i = 0; i<9; i++){
+            for(int j = 0; j<9; j++){
+                if(board[i][j]==46) continue;
+                else{
+                    if(nums[board[i][j]-48]>0){
+                        //System.out.println("first loop");
+                        return false;
+                    }
+                    else nums[board[i][j]-48]++;
+                }
+            }
+            Arrays.fill(nums,0);
         }
+        Arrays.fill(nums,0);
+        for(int i = 0; i<9; i++){
+            for(int j = 0; j<9; j++){
+                if(board[j][i]==46) continue;
+                else{
+                    if(nums[board[j][i]-48]>0){
+                        //System.out.println("second loop"+j+" "+i+" "+nums[board[j][i]]);
+                        return false;
+                    }
+                    else nums[board[j][i]-48]++;
+                }
+            }
+            Arrays.fill(nums,0);
+        }
+        Arrays.fill(nums,0);
+
+        while (startColoums<9&&startRow<9){
+            for(int i = startRow; i<startRow+3; i++){
+                for(int j = startColoums; j<startColoums+3; j++){
+                    if(board[i][j]==46) continue;
+                    else{
+                        if(nums[board[i][j]-48]>0){
+                            for(int i12 : nums) System.out.print(i12+" ");
+                            //  System.out.println("last loop "+j+" "+i+" "+nums[board[j][i]]);
+                            return false;
+                        }
+                        else nums[board[i][j]-48]++;
+                    }
+                }
+            }
+            Arrays.fill(nums,0);
+            startRow+=3;
+            if(startRow==9){
+                if(startColoums == 9) break;
+                startRow = 0;
+                startColoums +=3;
+            }
+        }
+
+        return result;
 
     }
 
+
+    public static List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> result = new ArrayList<>();
+        Map<String,List<String>> map = new HashMap<>();
+
+        for(String s : strs){
+            byte[] b = s.getBytes();
+            quickSort(b,0,b.length-1);
+            String key = new String(b);
+            List<String> value = map.get(key);
+            if(value == null){
+                List<String> temp = new ArrayList<>();
+                temp.add(s);
+                map.put(key,temp);
+            }
+            else {
+                value.add(s);
+            }
+        }
+//        map.values().stream().forEach(s->{
+//            s.stream().forEach(j-> System.out.print(j+" "));
+//            System.out.println();
+//        });
+        map.values().stream().forEach(s->result.add(s));
+
+        return result;
+    }
+
+    public static void quickSort(byte[] arr, int leftIndex, int rightIndex){ // O(n*log(n))
+        if(leftIndex<rightIndex){                                           // exit condition : if the leftIndex >= rightIndex, i.e. array has only one or no elements
+            int pivot = partition(arr,leftIndex,rightIndex);                // divide the array into two section, with pivot at its sorted position
+            quickSort(arr,leftIndex,(byte) (pivot-1));                      // keep calling itself recursively util there is one or no element
+            quickSort(arr,(byte)(pivot+1),rightIndex);                      // after which it returns, since all array is sorted, partition is only called if there at least two elements in array
+        }                                                                   // the recursive quickSort call divides the array into arrays with left of pivot elements and the with right of pivot elements
+    }                                                                       // and partition keeps getting called till there are less than 2 elements in the array, and sorting two elements is just comparing...
+
+    private static int partition(byte[] arr, int startIndex, int endIndex){  // divides the array into two sections, elements to left of pivot are smaller than pivot and
+        int pivot = endIndex;                                              // to the right of pivot are larger than pivot, pivot is chosen randomly as rightmost element
+        int leftIndex = startIndex;                                                //1. elements smaller than pivot are placed at this position and then this position is incremented
+        for(int i = startIndex; i < endIndex; i++){                           // loop runs form leftMost index till 2nd rightMostIndex ( index left of pivot)
+            if(arr[i]<arr[pivot]){                                           // if the element is smaller than pivot, then it is swapped with the leftIndex(see 1.)
+                Main.swap(arr,i, leftIndex);                                            // so all elements that were swapped with leftIndex are smaller than pivot
+                leftIndex++;                                                      // leftIndex is increment after the swap to represent new position that the smaller than pivot elements
+            }                                                                   // should be swapped with
+        }                                                                  // since the loop runs only through non-pivot section of the array,
+        Main.swap(arr,leftIndex, (byte) pivot);                                      // the pivot is swapped with the leftIndex as all elements smaller than pivot are placed at to the left of incremented leftIndex
+        return leftIndex;                                                 // this is the new pivot position ( leftIndex ), all elements to the left of leftIndex are smaller than pivot and
+    }
+
+    public static boolean isValid(String s){
+        boolean result = false;
+        if(s.isEmpty()) return result;
+        char[] strChar = s.toCharArray();
+        char isOpen = 0;
+        Stack<Character> stack = new Stack<Character>();
+        stack.push(strChar[0]);
+
+        for(int i = 1; i < strChar.length; i++){
+            if(!stack.isEmpty()){
+                isOpen = stack.peek();
+            }
+            char isClose = strChar[i];
+            if(isPaired(isOpen,isClose)) stack.pop();
+            else stack.push(isClose);
+            isOpen = 0;
+        }
+        result = stack.isEmpty();
+        return result;
+    }
+
+    private static boolean isPaired(char open, char close){
+        return open == '(' && close == ')';
+    }
 
     public static ListNode addTwoNumbers(ListNode l1, ListNode l2){
         ListNode result = new ListNode();

@@ -1,6 +1,5 @@
 package com.company;
 
-import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +26,7 @@ public class Main {
         LeetCodeSolutions.run();
         //for(int i : arr) System.out.print(i+" ");
     }
+
 
 
     public static int sqrt(int num){
@@ -310,8 +310,13 @@ public class Main {
         }
         return isSorted;
     }
-    private static void swap(int[] arr, int i ,int j){
+    static void swap(int[] arr, int i, int j){
         int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    static void swap(byte[] arr, int i, int j){
+        byte temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }
