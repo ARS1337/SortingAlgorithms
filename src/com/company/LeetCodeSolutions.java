@@ -7,19 +7,20 @@ import java.util.*;
 public class LeetCodeSolutions {
 
     public static void run(){
+        removeDuplicates(new int[]{0,0,1,1,1,2,2,3,3,4});
 
-        System.out.println((int)'1');
-//        List<List<String>> list = groupAnagrams(new String[]{"eat","tea","tan","ate","nat","bat"});
-//        list.stream().forEach(s->{
-//            s.stream().forEach(j-> System.out.print(j+" "));
-//            System.out.println();
-//        });
     }
 
-    public static ListNode mergeKLists(ListNode[] lists) {
-        ListNode result = new ListNode();
-        ListNode temp = result;
+    public static int removeDuplicates(int[] nums) {
+        int result = 0;
 
+        for(int i = 0; i < nums.length - 1; i++){
+            if(nums[i] == nums[i+1]) nums[i] = 1000+i;
+            else result++;
+        }
+
+        Arrays.stream(nums).forEach(s-> System.out.print(s+" "));
+        System.out.println("   "+result);
         return result;
     }
 
